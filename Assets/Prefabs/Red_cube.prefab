@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8527450198919557392}
   m_Layer: 0
   m_Name: Red_cube
-  m_TagString: Untagged
+  m_TagString: Red
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 6894827517789626890}
   m_Layer: 0
   m_Name: Quad
-  m_TagString: Red
+  m_TagString: Red_side
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

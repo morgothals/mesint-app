@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Button.uss?fileID=7433441132597879392&amp;guid=0ca755c1dbffae7439e0de7646b1ac1a&amp;type=3#Button" />
+    <ui:VisualElement class="root" style="height: auto; width: auto; flex-grow: 1; flex-direction: column;">
+        <ui:Button name="myButton" text="Create Board" class="my-button" style="align-self: center; align-content: auto; justify-content: flex-start; align-items: center; flex-direction: column; bottom: 10%; top: auto; position: absolute; min-width: 30%; min-height: 5px; left: 10%; max-width: 40%; max-height: none;" />
+    </ui:VisualElement>
+</ui:UXML>

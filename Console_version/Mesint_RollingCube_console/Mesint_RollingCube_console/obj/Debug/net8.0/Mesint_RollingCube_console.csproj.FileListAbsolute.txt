@@ -1,0 +1,15 @@
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\bin\Debug\net8.0\Mesint_RollingCube_console.deps.json
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\bin\Debug\net8.0\Mesint_RollingCube_console.dll
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\bin\Debug\net8.0\Mesint_RollingCube_console.pdb
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.GeneratedMSBuildEditorConfig.editorconfig
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.AssemblyInfoInputs.cache
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.AssemblyInfo.cs
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.csproj.CoreCompileInputs.cache
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.sourcelink.json
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.dll
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\refint\Mesint_RollingCube_console.dll
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.pdb
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\ref\Mesint_RollingCube_console.dll
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\bin\Debug\net8.0\Mesint_RollingCube_console.exe
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\bin\Debug\net8.0\Mesint_RollingCube_console.runtimeconfig.json
+C:\_Projects\_Unity\Mesint_250430\Console_version\Mesint_RollingCube_console\Mesint_RollingCube_console\obj\Debug\net8.0\Mesint_RollingCube_console.genruntimeconfig.cache
