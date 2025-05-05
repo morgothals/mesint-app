@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Red
   - Right_Side
+  - Red_side
+  - Obstacle
+  - Goal
   layers:
   - Default
   - TransparentFX

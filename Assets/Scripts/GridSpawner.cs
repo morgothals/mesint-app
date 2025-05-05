@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Mesint_RollingCube_console;
 using System.Linq;
+using System.Collections;
 
 
 [ExecuteAlways]
@@ -32,16 +33,17 @@ public class GridSpawner : MonoBehaviour
     {
         ClearGrid();
         occupied.Clear();
-    }
-
-    void Start()
-    {
         if (Application.isPlaying)
         {
 
             Initialize();
             Debug.Log("Intial");
         }
+    }
+
+    void Start()
+    {
+
     }
 
     void OnEnable()
@@ -82,7 +84,14 @@ public class GridSpawner : MonoBehaviour
         Spawn(redCubePrefab);
         Spawn(goalPrefab);
 
-        BuildStateRepresentation();
+        StartCoroutine(BuildStateRepresentation());
+       // StartCoroutine(DelayedSolve());
+
+    }
+
+    IEnumerator DelayedSolve()
+    {
+        yield return new WaitForSeconds(3);
         Debug.Log("Sorrend");
         var solver = new RandomSolver();
         var result = solver.Solve(BuildBoardState(), 1000);
@@ -90,6 +99,8 @@ public class GridSpawner : MonoBehaviour
             Debug.Log("Megoldás találva!");
         else
             Debug.Log("Nincs megoldás random módszerrel.");
+
+        yield return null;
     }
 
     private void PrintOccupied()
@@ -166,10 +177,32 @@ public class GridSpawner : MonoBehaviour
         return new Vector3(grid.x - offset, 0f, grid.y - offset);
     }
 
-    void BuildStateRepresentation()
+    private void PrintObstacleGrid()
+    {
+        if (obstacleGrid == null)
+        {
+            Debug.LogWarning("obstacleGrid még nincs inicializálva.");
+            return;
+        }
+
+        string output = "Obstacle Grid:\n";
+        for (int y = gridSize - 1; y >= 0; y--) // fentről lefelé olvasható
+        {
+            for (int x = 0; x < gridSize; x++)
+            {
+                output += obstacleGrid[x, y] ? "X " : ". ";
+            }
+            output += "\n";
+        }
+
+        Debug.Log(output);
+    }
+
+    IEnumerator BuildStateRepresentation()
     {
         Debug.Log("Build");
         PrintOccupied();
+        PrintObstacleGrid();
         // 1) Obstacle-ok leképezése gridbe
         obstacleGrid = new bool[gridSize, gridSize];
         foreach (Transform c in gridParent)
@@ -199,7 +232,9 @@ public class GridSpawner : MonoBehaviour
                     break;
             }
         }
-        PrintOccupied();
+        Debug.Log("Build vége");
+        PrintObstacleGrid();
+        yield return null;
 
     }
 
@@ -252,11 +287,12 @@ public class GridSpawner : MonoBehaviour
         => new BoardState(gridSize, obstacleGrid, startCube, goalCell);
 
 
-    private Vector3 GridToWorld3(Vector2Int grid)
+    public BoardState GetBoardState()
     {
-        float offset = (gridSize - 1) * 0.5f;
-        return new Vector3(grid.x - offset, 0f, grid.y - offset);
+        return BuildBoardState();
     }
+
+    public bool IsReady => startCube != null && obstacleGrid != null;
 
     private Vector3 GridToWorld(Vector2Int grid)
     {
@@ -264,14 +300,6 @@ public class GridSpawner : MonoBehaviour
         return new Vector3(grid.x - offset, 0f, grid.y - offset);
     }
 
-    Vector2Int WorldToGrid2(Vector3 w)
-    {
-        // gridSize=10: -4.5…+4.5 között van
-        float offset = (gridSize - 1) * 0.5f; // 4.5
-        int x = Mathf.RoundToInt(w.x + offset);
-        int y = Mathf.RoundToInt(w.z + offset);
-        return new Vector2Int(x, y);
-    }
 
     Vector2Int WorldToGrid(Vector3 w)
     {

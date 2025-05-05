@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1518247278832193775}
   m_Layer: 0
   m_Name: Red_cube_root
-  m_TagString: Untagged
+  m_TagString: Red
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43,6 +43,10 @@ PrefabInstance:
     - target: {fileID: 1351005540077424750, guid: 9a3533e42d328f74b98a95db819f060b, type: 3}
       propertyPath: m_Name
       value: Red_cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 1351005540077424750, guid: 9a3533e42d328f74b98a95db819f060b, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8527450198919557392, guid: 9a3533e42d328f74b98a95db819f060b, type: 3}
       propertyPath: m_LocalPosition.x

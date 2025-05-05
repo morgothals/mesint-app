@@ -1,6 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Button.uss?fileID=7433441132597879392&amp;guid=0ca755c1dbffae7439e0de7646b1ac1a&amp;type=3#Button" />
-    <ui:VisualElement class="root" style="height: auto; width: auto; flex-grow: 1; flex-direction: column;">
-        <ui:Button name="myButton" text="Create Board" class="my-button" style="align-self: center; align-content: auto; justify-content: flex-start; align-items: center; flex-direction: column; bottom: 10%; top: auto; position: absolute; min-width: 30%; min-height: 5px; left: 10%; max-width: 40%; max-height: none;" />
+    <ui:VisualElement name="VisualElement" class="root" style="height: auto; width: 253px; flex-grow: 1; flex-direction: column; align-items: flex-start; align-self: flex-start;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: column-reverse; align-items: auto; align-content: center; align-self: center; justify-content: flex-start; width: 213px; flex-wrap: nowrap; padding-top: 6px; padding-right: 6px; padding-bottom: 6px; padding-left: 6px;">
+            <ui:Button name="myButton" text="Create Board" class="my-button" style="align-self: center; align-content: auto; justify-content: flex-start; align-items: center; flex-direction: column; bottom: auto; top: auto; position: relative; min-width: auto; min-height: 5px; left: auto; max-width: none; max-height: none;" />
+            <ui:Button name="Solver_1_Button" text="Naive Solver" parse-escape-sequences="false" class="my-button" style="align-self: center; align-content: auto; justify-content: flex-start; align-items: center; flex-direction: column; bottom: auto; top: auto; position: relative; min-width: auto; min-height: 5px; left: auto; max-width: none; max-height: none; flex-grow: 0; flex-shrink: 0; -unity-text-align: upper-center; white-space: pre;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 339684570154936517}
   m_Layer: 0
   m_Name: Gray_cube_root
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43,6 +43,10 @@ PrefabInstance:
     - target: {fileID: 1084368048210147833, guid: 86ef2e6381effc0499cac0e6ec50fedc, type: 3}
       propertyPath: m_Name
       value: Gray_cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 3924546778060614406, guid: 86ef2e6381effc0499cac0e6ec50fedc, type: 3}
+      propertyPath: m_TagString
+      value: Right_Side
       objectReference: {fileID: 0}
     - target: {fileID: 4642635146258929836, guid: 86ef2e6381effc0499cac0e6ec50fedc, type: 3}
       propertyPath: m_LocalPosition.x
