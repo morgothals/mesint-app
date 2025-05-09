@@ -1,40 +1,113 @@
-using UnityEngine;
-using System.Collections.Generic;
-using Mesint_RollingCube_console;
-using System.Linq;
-using System.Collections;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Mesint_RollingCube_console;
+using UnityEngine;
 public class SolverController : MonoBehaviour
 {
+    [Header("Hivatkozások")]
     [SerializeField] private GridSpawner gridSpawner;
     [SerializeField] private CubeMover cubeMover;
+
+    [Header("Megoldási beállítások")]
+    [SerializeField] private SolverType solverType = SolverType.TrialError;
+
+    [SerializeField] private bool useMaxStepLimit = true;
+    [SerializeField] private int maxSteps = 1000;
+
+    [SerializeField] private bool allowRestart = false;
+    [SerializeField] private int maxRestartAttempts = 3;
+
+
+    [Header("Events")]
+    [SerializeField] private SolverStartedEvent solverStartedEvent;
+
+    [SerializeField] private MessageEvent MessageEvent;
+    [SerializeField] private GridChangedEvent gridChangedEvent;
+    [SerializeField] private string warningMessage = "";
+
+    private BoardState boardStateSaving = null;
+
+    void OnEnable()
+    {
+        gridChangedEvent.OnEvent += OnGridChangedEvent;
+    }
+    void OnDisable()
+    {
+        gridChangedEvent.OnEvent -= OnGridChangedEvent;
+    }
+
     public void HandleSolveRequest()
     {
         if (gridSpawner == null || !gridSpawner.IsReady)
         {
-            Debug.LogError("GridSpawner nincs kész vagy nincs beállítva.");
+            warningMessage = "GridSpawner nincs kész vagy nincs beállítva.";
+            MessageEvent.Raise(warningMessage);
+            Debug.LogError(warningMessage);
             return;
         }
+        solverStartedEvent?.Raise(solverType.ToString());
 
-        StartCoroutine(Solve(gridSpawner.GetBoardState()));
+
+        if (boardStateSaving == null)
+            StartCoroutine(Solve(gridSpawner.GetBoardState()));
+        else
+            StartCoroutine(Solve(boardStateSaving));
+    }
+
+    public void OnGridChangedEvent()
+    {
+        boardStateSaving = null;
     }
 
     private IEnumerator Solve(BoardState boardState)
     {
         yield return new WaitForSeconds(1f);
 
-        var solver = new RandomSolver();
-        var cubeSteps = solver.Solve(boardState, 1000);
+        /*  var solver = new RandomSolver();
+          var cubeSteps = solver.Solve(boardState, 1000);
 
-        if (cubeSteps == null)
+          if (cubeSteps == null)
+          {
+              Debug.Log("Nincs megoldás.");
+              yield break;
+          }
+  */
+        boardStateSaving = boardState;
+        List<CubeState> solution = null;
+        int attempts = 0;
+
+        do
         {
-            Debug.Log("Nincs megoldás.");
+            ISolver solver = CreateSolver(solverType);
+            solution = useMaxStepLimit
+                ? solver.Solve(boardState, maxSteps)
+                : solver.Solve(boardState);
+
+            if (solution != null)
+            {
+                warningMessage = $"Megoldás {attempts + 1}. próbálkozásra megtalálva.";
+                MessageEvent.Raise(warningMessage);
+                Debug.Log(warningMessage);
+                break;
+            }
+
+            attempts++;
+
+        } while (allowRestart && attempts < maxRestartAttempts);
+
+        if (solution == null)
+        {
+            warningMessage = "Nem sikerült megoldást találni a megadott próbálkozások alatt.";
+            MessageEvent.Raise(warningMessage);
+            Debug.LogWarning(warningMessage);
             yield break;
         }
 
         List<(Vector3 pos, int redFace)> steps = new();
 
-        foreach (var cube in cubeSteps)
+        foreach (var cube in solution)
         {
             Vector3 worldPos = GridToWorld(cube.X, cube.Y);
             int redIndex = Array.FindIndex(cube.Faces, f => f == FaceColor.Red);
@@ -42,6 +115,19 @@ public class SolverController : MonoBehaviour
         }
 
         cubeMover.EnqueueMoves(steps);
+    }
+
+    private ISolver CreateSolver(SolverType type)
+    {
+        return type switch
+        {
+            SolverType.TrialError => new RandomSolver(),
+            SolverType.DFS => new DFSSolver(),
+            SolverType.Backtrack => new BacktrackSolver(),
+            SolverType.BFS => new BFSSolver(),
+            SolverType.AStar => new AStarSolver(),
+            _ => new RandomSolver()
+        };
     }
 
     private Vector3 GridToWorld(int x, int y)

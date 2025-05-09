@@ -12,6 +12,9 @@ public class CubeMover : MonoBehaviour
     [SerializeField] private Material redMaterial;
     [SerializeField] private Material blueMaterial;
 
+    [Header("Events")]
+    [SerializeField] private StepUpdatedEvent stepUpdatedEvent;
+
     private Queue<(Vector3 targetPosition, int redFaceIndex)> moveQueue = new();
     private bool isMoving = false;
     private Transform[] faceQuads; // a 6 quad a kocka alá
@@ -19,7 +22,7 @@ public class CubeMover : MonoBehaviour
 
     void Start()
     {
-        Initialize();
+        //Initialize();
     }
 
     void Initialize()
@@ -61,6 +64,7 @@ public class CubeMover : MonoBehaviour
     {
         Initialize();
         isMoving = true;
+        int stepCount = 0;
 
         while (moveQueue.Count > 0)
         {
@@ -76,8 +80,10 @@ public class CubeMover : MonoBehaviour
             var (targetPos, redFace) = moveQueue.Dequeue();
 
             SetRedFace(redFace);
-            DebugRedFaceDirection(redFace);
+            //DebugRedFaceDirection(redFace);
             cubeTransform.position = targetPos;
+            stepCount++;
+            stepUpdatedEvent?.Raise(stepCount);
 
             yield return new WaitForSeconds(delay);
         }

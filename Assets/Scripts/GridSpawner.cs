@@ -29,16 +29,21 @@ public class GridSpawner : MonoBehaviour
     // belső állapot: már foglalt mezők
     private readonly HashSet<Vector2Int> occupied = new();
 
-    void Awake()
+    [Header("Events")]
+    [SerializeField]
+    private GridChangedEvent gridChangedEvent;
+
+  void Awake()
     {
         ClearGrid();
         occupied.Clear();
-        if (Application.isPlaying)
+       /* if (Application.isPlaying)
         {
 
             Initialize();
             Debug.Log("Intial");
         }
+        */
     }
 
     void Start()
@@ -48,6 +53,7 @@ public class GridSpawner : MonoBehaviour
 
     void OnEnable()
     {
+        /*
 #if UNITY_EDITOR
         if (!Application.isPlaying)
         {
@@ -57,6 +63,7 @@ public class GridSpawner : MonoBehaviour
 
         }
 #endif
+*/
 
 
     }
@@ -85,6 +92,8 @@ public class GridSpawner : MonoBehaviour
         Spawn(goalPrefab);
 
         StartCoroutine(BuildStateRepresentation());
+
+        gridChangedEvent.Raise();
        // StartCoroutine(DelayedSolve());
 
     }
