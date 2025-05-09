@@ -51,6 +51,6 @@ public class SolverController : MonoBehaviour
         return new Vector3(x - offset, 0f, y - offset);
     }
 
- 
+
 
 }
