@@ -13,6 +13,13 @@ namespace Mesint_RollingCube_console
 
     public class AStarSolver : ISolver
     {
+        private readonly bool circleCheck;
+
+        public AStarSolver(bool circleCheck = true)
+        {
+            this.circleCheck = circleCheck;
+        }
+
         public List<CubeState> Solve(BoardState start, int maxSteps)
             => Solve(start);
 
@@ -21,48 +28,49 @@ namespace Mesint_RollingCube_console
             var open = new List<SearchNode>();
             var closed = new HashSet<BoardState>();
 
-            // Kezdőcsomópont: G=0, H=heurisztika(start)
             open.Add(new SearchNode(start, null, null, 0, Heuristic(start)));
 
             while (open.Count > 0)
             {
-                // Keresd meg a legkisebb F-ű csomópontot
-                int bestIdx = 0;
-                for (int i = 1; i < open.Count; i++)
-                    if (open[i].F < open[bestIdx].F)
-                        bestIdx = i;
+                // O(n) keresés a legkisebb F-ű csomópontra
+                int best = open.Select((n, i) => (n.F, i))
+                               .OrderBy(x => x.F)
+                               .First().i;
 
-                var currentNode = open[bestIdx];
-                open.RemoveAt(bestIdx);
+                var node = open[best];
+                open.RemoveAt(best);
 
-                if (currentNode.State.IsGoal())
-                    return ReconstructPath(currentNode);
+                if (node.State.IsGoal())
+                    return ReconstructPath(node);
 
-                closed.Add(currentNode.State);
+                if (circleCheck)
+                    closed.Add(node.State);
 
-                foreach (var move in currentNode.State.GetValidMoves())
+                foreach (var move in node.State.GetValidMoves())
                 {
-                    var nextState = currentNode.State.Apply(move);
-                    if (closed.Contains(nextState))
+                    var nextState = node.State.Apply(move);
+
+                    // ha circleCheck, és már zárt, akkor kihagyjuk
+                    if (circleCheck && closed.Contains(nextState))
                         continue;
 
-                    int gNew = currentNode.G + 1;
-                    int hNew = Heuristic(nextState);
+                    var gNew = node.G + 1;
+                    var hNew = Heuristic(nextState);
+                    var child = new SearchNode(nextState, node, move, gNew, hNew);
 
-                    // Ha már nyitott listában van, és ott jobb G-je van, kihagyjuk
-                    var existing = open.FirstOrDefault(n => n.State.Equals(nextState));
-                    if (existing != null && existing.G <= gNew)
-                        continue;
+                    // ha circleCheck, nézzük az open listát is
+                    if (circleCheck)
+                    {
+                        var exist = open.FirstOrDefault(n => n.State.Equals(nextState));
+                        if (exist != null && exist.G <= gNew)
+                            continue;
+                        open.Remove(exist);
+                    }
 
-                    // Egyébként adjuk a nyitotthoz (vagy cseréljük)
-                    if (existing != null)
-                        open.Remove(existing);
-
-                    open.Add(new SearchNode(nextState, currentNode, move, gNew, hNew));
+                    open.Add(child);
                 }
             }
 
-            // nincs út
             return null;
         }
 

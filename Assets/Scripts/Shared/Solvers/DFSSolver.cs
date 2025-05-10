@@ -8,6 +8,13 @@ namespace Mesint_RollingCube_console
 {
     public class DFSSolver : ISolver
     {
+        private readonly bool circleCheck;
+
+        public DFSSolver(bool circleCheck = true)
+        {
+            this.circleCheck = circleCheck;
+        }
+
         public List<CubeState> Solve(BoardState start, int maxSteps)
             => Solve(start);
 
@@ -25,13 +32,31 @@ namespace Mesint_RollingCube_console
                 if (node.State.IsGoal())
                     return ReconstructPath(node);
 
-                if (!visited.Add(node.State))
+                // ha van circleCheck, használjuk a visited setet is
+                if (circleCheck && !visited.Add(node.State))
                     continue;
 
                 foreach (var move in node.State.GetValidMoves())
                 {
-                    var nextState = node.State.Apply(move);
-                    var child = new SearchNode(nextState, node, move, node.G + 1, 0);
+                    var next = node.State.Apply(move);
+
+                    // ha circleCheck, akkor elkerüljük a parent-ciklust is
+                    if (circleCheck)
+                    {
+                        var p = node;
+                        bool loop = false;
+                        while (p != null)
+                        {
+                            if (p.State.Equals(next))
+                            {
+                                loop = true; break;
+                            }
+                            p = p.Parent;
+                        }
+                        if (loop) continue;
+                    }
+
+                    var child = new SearchNode(next, node, move, node.G + 1, 0);
                     stack.Push(child);
                 }
             }

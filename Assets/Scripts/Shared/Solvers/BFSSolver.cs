@@ -8,6 +8,13 @@ namespace Mesint_RollingCube_console
 {
     public class BFSSolver : ISolver
     {
+        private readonly bool circleCheck;
+
+        public BFSSolver(bool circleCheck = true)
+        {
+            this.circleCheck = circleCheck;
+        }
+
         public List<CubeState> Solve(BoardState start, int maxSteps)
             => Solve(start);
 
@@ -16,9 +23,9 @@ namespace Mesint_RollingCube_console
             var queue = new Queue<SearchNode>();
             var visited = new HashSet<BoardState>();
 
-            var root = new SearchNode(start, null, null, 0, 0);
-            queue.Enqueue(root);
-            visited.Add(start);
+            queue.Enqueue(new SearchNode(start, null, null, 0, 0));
+            if (circleCheck)
+                visited.Add(start);
 
             while (queue.Count > 0)
             {
@@ -29,12 +36,18 @@ namespace Mesint_RollingCube_console
 
                 foreach (var move in node.State.GetValidMoves())
                 {
-                    var nextState = node.State.Apply(move);
-                    if (visited.Add(nextState))
+                    var next = node.State.Apply(move);
+
+                    // körfigyelés
+                    if (circleCheck)
                     {
-                        var child = new SearchNode(nextState, node, move, node.G + 1, 0);
-                        queue.Enqueue(child);
+                        if (visited.Contains(next)) continue;
+                        visited.Add(next);
                     }
+
+                    // ha nincs circleCheck, minden ágat beengedünk (vigyázat: végtelen is lehet)
+                    var child = new SearchNode(next, node, move, node.G + 1, 0);
+                    queue.Enqueue(child);
                 }
             }
 

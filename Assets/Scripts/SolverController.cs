@@ -15,9 +15,11 @@ public class SolverController : MonoBehaviour
 
     [SerializeField] private bool useMaxStepLimit = true;
     [SerializeField] private int maxSteps = 1000;
+    [SerializeField] private bool circleCheck = false;
 
     [SerializeField] private bool allowRestart = false;
     [SerializeField] private int maxRestartAttempts = 3;
+    [SerializeField] private int maxDepth = 20;
 
 
     [Header("Events")]
@@ -26,6 +28,8 @@ public class SolverController : MonoBehaviour
     [SerializeField] private MessageEvent MessageEvent;
     [SerializeField] private GridChangedEvent gridChangedEvent;
     [SerializeField] private string warningMessage = "";
+
+    public event Action OnSolveCompleted;
 
     private BoardState boardStateSaving = null;
 
@@ -80,7 +84,7 @@ public class SolverController : MonoBehaviour
 
         do
         {
-            ISolver solver = CreateSolver(solverType);
+            ISolver solver = CreateSolver(solverType, circleCheck);
             solution = useMaxStepLimit
                 ? solver.Solve(boardState, maxSteps)
                 : solver.Solve(boardState);
@@ -102,6 +106,7 @@ public class SolverController : MonoBehaviour
             warningMessage = "Nem sikerült megoldást találni a megadott próbálkozások alatt.";
             MessageEvent.Raise(warningMessage);
             Debug.LogWarning(warningMessage);
+            OnSolveCompleted?.Invoke();
             yield break;
         }
 
@@ -115,17 +120,19 @@ public class SolverController : MonoBehaviour
         }
 
         cubeMover.EnqueueMoves(steps);
+
+        //OnSolveCompleted?.Invoke();
     }
 
-    private ISolver CreateSolver(SolverType type)
+    private ISolver CreateSolver(SolverType type, bool circleCheck)
     {
         return type switch
         {
             SolverType.TrialError => new RandomSolver(),
-            SolverType.DFS => new DFSSolver(),
-            SolverType.Backtrack => new BacktrackSolver(),
-            SolverType.BFS => new BFSSolver(),
-            SolverType.AStar => new AStarSolver(),
+            SolverType.DFS => new DFSSolver(circleCheck),
+            SolverType.Backtrack => new BacktrackSolver(maxDepth, circleCheck),
+            SolverType.BFS => new BFSSolver(circleCheck),
+            SolverType.AStar => new AStarSolver(circleCheck),
             _ => new RandomSolver()
         };
     }
