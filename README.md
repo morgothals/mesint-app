@@ -4,6 +4,15 @@ Made by Péter Borbás
 
 This project is an interactive educational visualization built with **Unity** and **UI Toolkit**, designed to demonstrate various **search algorithms** (like DFS, BFS, Backtrack, A*) by solving a constrained pathfinding problem on a grid-based board.
 
+
+> ⚠️ **Important Warning – Infinite Loop Risk**  
+> Some search algorithms (like **Backtrack**, **DFS**, or **A\*** when using naive exploration) can revisit previous states and explore endlessly if **Cycle Detection** (`circleCheck`) is turned **off**.  
+> 
+> If you disable `circleCheck`, the application **may freeze** or become unresponsive during pathfinding on larger or complex boards.
+>
+> ✅ **Recommended**: Keep `circleCheck` enabled unless you have a specific reason to analyze unrestricted search behavior.
+
+
 ## 🧩 The Problem
 
 On a **10x10 board**, there are:
