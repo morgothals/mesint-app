@@ -61,6 +61,10 @@ The goal is to **roll the cube** to a designated goal cell (`C`) by tilting it o
 
 ## 🧪 How to Run
 
+
+use the Mesint_app.rar or
+
+
 1. Clone this repository into your project folder.
 2. Open the project' scene file in **Unity 6.0+**.
 3. Open the main scene and enter Play Mode.
