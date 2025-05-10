@@ -52,8 +52,8 @@ The goal is to **roll the cube** to a designated goal cell (`C`) by tilting it o
 
 ## 🧪 How to Run
 
-1. Clone this repository into your Unity project's `Assets/` folder.
-2. Open the project in **Unity 2023.2+**.
+1. Clone this repository into your project folder.
+2. Open the project' scene file in **Unity 6.0+**.
 3. Open the main scene and enter Play Mode.
 4. Use the in-game UI to:
    - Generate a board
